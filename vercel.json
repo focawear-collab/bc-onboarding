@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "api/complete.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/complete", "dest": "/api/complete.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
