@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlackChicken — Onboarding Garzones</title>
+<style>
+:root{--bg:#0a0a0a;--card:#141414;--card-hover:#1a1a1a;--gold:#d4a843;--gold-light:#f5e6b8;--green:#2ecc71;--red:#e74c3c;--text:#e0e0e0;--muted:#888;--border:#2a2a2a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:720px;margin:0 auto;padding:20px}
+h1{color:var(--gold);font-size:1.8rem;text-align:center;margin-bottom:8px}
+h2{color:var(--gold);font-size:1.3rem;margin-bottom:16px}
+h3{color:var(--gold-light);font-size:1.1rem;margin:16px 0 8px}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:32px;font-size:0.95rem}
+
+/* Progress */
+.progress-bar{background:var(--card);border-radius:20px;height:8px;margin-bottom:32px;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,var(--gold),var(--gold-light));height:100%;border-radius:20px;transition:width 0.5s ease}
+.steps{display:flex;justify-content:space-between;margin-bottom:24px;gap:4px}
+.step{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:0.75rem;color:var(--muted);background:var(--card);transition:all 0.3s}
+.step.active{color:var(--gold);background:#1f1a0f;font-weight:600}
+.step.done{color:var(--green);background:#0f1f14}
+
+/* Screens */
+.screen{display:none;animation:fadeIn 0.4s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.video-card{cursor:pointer;transition:all 0.3s}
+.video-card:hover{background:var(--card-hover);border-color:var(--gold)}
+.video-card.watched{border-color:var(--green)}
+.video-card .status{float:right;font-size:1.2rem}
+.video-card .title{font-weight:600;margin-bottom:4px}
+.video-card .desc{color:var(--muted);font-size:0.85rem}
+
+/* Input */
+input[type="text"]{width:100%;padding:14px 16px;background:var(--card);border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:1rem;outline:none;transition:border 0.3s}
+input[type="text"]:focus{border-color:var(--gold)}
+input[type="text"]::placeholder{color:#555}
+label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
+
+/* Buttons */
+.btn{display:inline-block;padding:14px 32px;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s;text-align:center;width:100%}
+.btn-gold{background:var(--gold);color:#111}
+.btn-gold:hover{background:var(--gold-light)}
+.btn-gold:disabled{background:#555;color:#888;cursor:not-allowed}
+.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold)}
+.btn-outline:hover{background:var(--gold);color:#111}
+.btn-green{background:var(--green);color:#fff}
+.btn-back{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:8px}
+.btn-back:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Video Player */
+.video-wrapper{position:relative;width:100%;padding-bottom:56.25%;margin-bottom:16px;border-radius:12px;overflow:hidden;background:#000}
+.video-wrapper iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+#videoOverlay{display:none}
+#videoOverlay.active{display:block}
+
+/* Document */
+.doc-content{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;max-height:60vh;overflow-y:auto;font-size:0.92rem;line-height:1.8}
+.doc-content h3{color:var(--gold);margin-top:20px}
+.doc-content ul{padding-left:20px;margin:8px 0}
+.doc-content li{margin-bottom:6px}
+.doc-content strong{color:var(--gold-light)}
+.scroll-hint{text-align:center;color:var(--muted);font-size:0.85rem;margin:12px 0}
+
+/* Quiz */
+.quiz-q{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.quiz-q .q-text{font-weight:600;margin-bottom:12px}
+.quiz-q .q-num{color:var(--gold);font-size:0.85rem;margin-bottom:4px}
+.option{display:block;padding:12px 16px;margin-bottom:8px;background:#1a1a1a;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.95rem}
+.option:hover{border-color:var(--gold);background:#1f1a0f}
+.option.selected{border-color:var(--gold);background:#1f1a0f;color:var(--gold)}
+.option.correct{border-color:var(--green);background:#0f1f14;color:var(--green)}
+.option.wrong{border-color:var(--red);background:#1f0f0f;color:var(--red)}
+
+/* Result */
+.result-card{text-align:center;padding:40px 20px}
+.result-icon{font-size:4rem;margin-bottom:16px}
+.result-score{font-size:2.5rem;font-weight:700;color:var(--gold);margin-bottom:8px}
+.result-msg{color:var(--muted);font-size:1.1rem;margin-bottom:24px}
+
+/* Logo */
+.logo{text-align:center;margin-bottom:24px}
+.logo span{font-size:2.5rem}
+
+/* Completion */
+.completion{text-align:center;padding:40px 20px}
+.check-big{font-size:5rem;margin-bottom:16px}
+.completion h2{font-size:1.5rem;margin-bottom:8px}
+.completion p{color:var(--muted);margin-bottom:24px}
+.cert-box{background:var(--card);border:2px solid var(--gold);border-radius:16px;padding:32px 24px;margin:24px 0}
+.cert-box .cert-title{color:var(--gold);font-size:1.2rem;font-weight:700;margin-bottom:16px}
+.cert-box .cert-name{font-size:1.8rem;font-weight:700;color:var(--gold-light);margin-bottom:8px}
+.cert-box .cert-date{color:var(--muted);font-size:0.9rem}
+
+/* Counter */
+.counter{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;color:var(--muted);font-size:0.85rem}
+
+/* Loading */
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--muted);border-top-color:var(--gold);border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- PROGRESS -->
+<div id="progressArea" style="display:none">
+<div class="steps">
+  <div class="step" data-step="1">Nombre</div>
+  <div class="step" data-step="2">Videos</div>
+  <div class="step" data-step="3">Carta</div>
+  <div class="step" data-step="4">Quiz</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<!-- SCREEN 0: Welcome -->
+<div class="screen active" id="s-welcome">
+<div class="logo"><span>🍗</span></div>
+<h1>BlackChicken</h1>
+<p class="subtitle">Onboarding Garzones</p>
+<div class="card" style="text-align:center">
+  <p style="margin-bottom:20px">Bienvenido al equipo BlackChicken. Antes de tu primer día necesitamos que completes este proceso de capacitación.</p>
+  <p style="color:var(--muted);font-size:0.85rem;margin-bottom:24px">Verás 5 videos, leerás nuestra carta, y responderás un quiz corto. Toma aproximadamente 30-40 minutos.</p>
+  <label for="nameInput">Tu nombre completo</label>
+  <input type="text" id="nameInput" placeholder="Ej: Juan Pérez" autocomplete="name">
+  <div style="margin-top:20px">
+    <button class="btn btn-gold" id="startBtn" disabled onclick="startOnboarding()">Comenzar</button>
+  </div>
+</div>
+</div>
+
+<!-- SCREEN 1: Videos -->
+<div class="screen" id="s-videos">
+<h2>📹 Videos de Capacitación</h2>
+<p style="color:var(--muted);margin-bottom:16px;font-size:0.9rem">Mira cada video completo. Se marcará automáticamente cuando lo termines.</p>
+<div class="counter"><span id="videoCount">0</span>/5 videos completados</div>
+
+<div id="videoList">
+  <div class="video-card card" data-idx="0" onclick="playVideo(0)">
+    <span class="status">⏳</span>
+    <div class="title">1. Bienvenida</div>
+    <div class="desc">Conoce BlackChicken y nuestra cultura</div>
+  </div>
+  <div class="video-card card" data-idx="1" onclick="playVideo(1)">
+    <span class="status">⏳</span>
+    <div class="title">2. Recepción de Clientes</div>
+    <div class="desc">Cómo recibir y atender al cliente</div>
+  </div>
+  <div class="video-card card" data-idx="2" onclick="playVideo(2)">
+    <span class="status">⏳</span>
+    <div class="title">3. Carta Express BlackChicken — Parte 1</div>
+    <div class="desc">Aprende nuestra carta y productos</div>
+  </div>
+  <div class="video-card card" data-idx="3" onclick="playVideo(3)">
+    <span class="status">⏳</span>
+    <div class="title">4. Carta Express BlackChicken — Parte 2</div>
+    <div class="desc">Continuación de la carta</div>
+  </div>
+  <div class="video-card card" data-idx="4" onclick="playVideo(4)">
+    <span class="status">⏳</span>
+    <div class="title">5. Rapidez + Rotación</div>
+    <div class="desc">Eficiencia y rotación de mesas</div>
+  </div>
+</div>
+
+<!-- Video Player Overlay -->
+<div id="videoOverlay">
+  <div class="card" style="padding:0;overflow:hidden;border-radius:12px">
+    <div class="video-wrapper"><div id="ytPlayer"></div></div>
+    <div style="padding:16px;display:flex;justify-content:space-between;align-items:center">
+      <span id="videoTimer" style="color:var(--muted);font-size:0.85rem"></span>
+      <button class="btn btn-outline" style="width:auto;padding:10px 20px" onclick="closeVideo()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:16px">
+  <button class="btn btn-gold" id="videosNextBtn" disabled onclick="goToDoc()">Continuar a la Carta →</button>
+</div>
+</div>
+
+<!-- SCREEN 2: Document -->
+<div class="screen" id="s-doc">
+<h2>📋 Descripción de Platos</h2>
+<p style="color:var(--muted);margin-bottom:16px;font-size:0.9rem">Lee cuidadosamente la descripción de cada plato. Esto te ayudará en el quiz.</p>
+
+<div class="doc-content" id="docContent">
+<h3>🍗 POLLO ROSTIZADO</h3>
+<p>Preparado en un proceso de 24 horas: 21 de marinado y 3 de cocción lenta en nuestra rotisserie. Esto da como resultado una carne tierna, jugosa y dorada.</p>
+
+<h3>🍽️ PECHUGA GRILLÉ</h3>
+<p>Pechuga de pollo grillada con técnica <em>Slow Cook</em>, lo que la hace increíblemente suave, jugosa y con un delicioso sabor a parrilla.</p>
+
+<h3>🔥 POLLO COREANO (en 4 salsas distintas)</h3>
+<p>Cubos de pechuga de pollo marinados y bañados en diferentes salsas:</p>
+<ul>
+<li><strong>Coreana:</strong> agridulce, semi picante. Base de salsa <em>Gochujang</em> coreana.</li>
+<li><strong>Tso:</strong> agridulce, no picante. Similar a la teriyaki.</li>
+<li><strong>Crispy:</strong> tradicional.</li>
+<li><strong>Búfalo:</strong> más picante y con un toque agrio. Nuestra opción más intensa.</li>
+</ul>
+<p>También disponible en versión <em>falafel</em> para vegetarianos.</p>
+
+<h3>🍖 COSTILLAS COREANAS BBQ</h3>
+<p>Costillas estilo St. Louis, muy tiernas, adobadas en nuestra salsa BBQ coreana de autor.</p>
+
+<h3>🍟 ACOMPAÑAMIENTOS</h3>
+<ul>
+<li><strong>Arroz Chaufa:</strong> clásico chaufa con base de vegetales y tortilla de huevo.</li>
+<li><strong>Papas Fritas estilo Belga:</strong> crujientes por fuera, suaves por dentro. Se fríen dos veces (técnica belga).</li>
+</ul>
+
+<h3>🥗 ENSALADAS</h3>
+<ul>
+<li><strong>Black Salad:</strong> mix de hojas verdes, almendras crujientes, parmesano, alcachofa.</li>
+<li><strong>Ensalada Camarón:</strong> igual que la Black, con agregado de camarón.</li>
+<li><strong>Asian Salad:</strong> mix de hojas, pollo desmenuzado, maní japonés, vinagreta asiática.</li>
+<li><strong>César Salad:</strong> clásica ensalada César con hojas verdes, crutones, pollo, parmesano.</li>
+</ul>
+
+<h3>Vinagretas disponibles:</h3>
+<ul>
+<li><strong>De la casa:</strong> emulsión de aceto balsámico y aceite de oliva.</li>
+<li><strong>Asiática:</strong> agridulce, auténtica y muy fresca.</li>
+<li><strong>César:</strong> versión del chef de la clásica.</li>
+</ul>
+
+<h3>🍔 BURGERS DE POLLO FRITO</h3>
+<p>También disponibles en versión <em>falafel</em>.</p>
+<ul>
+<li><strong>Korean Burger:</strong> pollo coreano, coleslaw, pepinillo, alioli, pan de papa.</li>
+<li><strong>TSO Burger:</strong> pollo en salsa Tso, coleslaw, pepinillo, alioli, pan de papa.</li>
+<li><strong>Crispy Burger:</strong> pollo crispy, coleslaw, pepinillo, alioli, pan de papa.</li>
+<li><strong>Buffalo Burger:</strong> pollo en salsa búfalo, coleslaw, pepinillo, alioli, pan de papa.</li>
+<li><strong>Classic Burger:</strong> pollo crispy, lechuga, tomate, alioli, pepinillo.</li>
+</ul>
+
+<h3>🥤 BEBIDAS DE LA CASA</h3>
+<ul>
+<li><strong>Ice Tea:</strong> té negro con un toque de limón sutil.</li>
+<li><strong>Limonada:</strong> limón sutil y un ligero sabor a jengibre.</li>
+</ul>
+<p>Ambas endulzadas con <strong>Stevia</strong>.</p>
+
+<h3>🍮 POSTRE</h3>
+<p><strong>Budín de la Toti:</strong> budín de pan súper suave.</p>
+
+<h3>Salsas del Chef</h3>
+<ul>
+<li><strong>Mielken:</strong> combinación de miel, merkén y otros ingredientes. Dulce con un leve picor ahumado.</li>
+<li><strong>Alioli Japonesa:</strong> fusión entre el alioli español y la mayonesa japonesa. Cremosa, suave, toque umami.</li>
+<li><strong>Coreana:</strong> base de <em>Gochujang</em>. Picor suave y sabor agridulce.</li>
+<li><strong>Tso:</strong> asiática agridulce, no picante. Similar a la teriyaki.</li>
+<li><strong>Búfalo:</strong> americana tradicional, picante y ácida. La más intensa.</li>
+</ul>
+</div>
+
+<div class="scroll-hint" id="scrollHint">↓ Baja para leer todo el documento ↓</div>
+<div style="margin-top:16px">
+  <button class="btn btn-gold" id="docNextBtn" disabled onclick="goToQuiz()">Continuar al Quiz →</button>
+  <button class="btn btn-back" onclick="goToVideos()">← Volver a Videos</button>
+</div>
+</div>
+
+<!-- SCREEN 3: Quiz -->
+<div class="screen" id="s-quiz">
+<h2>📝 Quiz de Evaluación</h2>
+<p style="color:var(--muted);margin-bottom:8px;font-size:0.9rem">Responde las siguientes preguntas. Necesitas <strong style="color:var(--gold)">80% (7/8)</strong> para aprobar.</p>
+<div id="quizQuestions"></div>
+<div style="margin-top:20px">
+  <button class="btn btn-gold" id="submitQuiz" disabled onclick="gradeQuiz()">Enviar Respuestas</button>
+</div>
+</div>
+
+<!-- SCREEN 4: Results -->
+<div class="screen" id="s-result">
+<div id="resultContent"></div>
+</div>
+
+</div>
+
+<!-- YouTube IFrame API -->
+<script>
+var tag=document.createElement('script');tag.src='https://www.youtube.com/iframe_api';
+document.head.appendChild(tag);
+var ytReady=false,player=null;
+function onYouTubeIframeAPIReady(){ytReady=true}
+</script>
+
+<script>
+// ===== DATA =====
+var VIDEOS = [
+  {id:'M8K6jHuKTGw', title:'Bienvenida'},
+  {id:'7iW01CVfiVg', title:'Recepción de Clientes'},
+  {id:'svFXAkzYtOk', title:'Carta Express BlackChicken 1'},
+  {id:'N6Zewjq10KE', title:'Carta Express BlackChicken 2'},
+  {id:'uZjB7u3vGdg', title:'Rapidez + Rotación'}
+];
+
+var QUIZ = [
+  {q:'¿Cuántas horas toma el proceso completo del Pollo Rostizado (marinado + cocción)?',
+   o:['12 horas','24 horas','48 horas','6 horas'], a:1},
+  {q:'¿Qué técnica se usa para la Pechuga Grillé?',
+   o:['Deep Fry','Sous Vide','Slow Cook','Flash Grill'], a:2},
+  {q:'¿Cuál es la salsa más picante del Pollo Coreano?',
+   o:['Coreana','Tso','Crispy','Búfalo'], a:3},
+  {q:'¿Qué opción vegetariana existe para las Burgers y el Pollo Coreano?',
+   o:['Tofu','Falafel','Seitán','Champiñones'], a:1},
+  {q:'¿Con qué se endulzan las bebidas de la casa (Ice Tea y Limonada)?',
+   o:['Azúcar','Miel','Stevia','Sin endulzante'], a:2},
+  {q:'¿Qué técnica se usa para las Papas Fritas estilo Belga?',
+   o:['Se fríen una vez a alta temperatura','Se hornean','Se fríen dos veces','Se hacen al airfryer'], a:2},
+  {q:'¿Qué ingredientes tiene la salsa Mielken?',
+   o:['Miel y mostaza','Miel y merkén','Miel y limón','Merkén y ají'], a:1},
+  {q:'¿Cuál de estas ensaladas lleva maní japonés?',
+   o:['Black Salad','César Salad','Ensalada Camarón','Asian Salad'], a:3}
+];
+
+// ===== STATE =====
+var userName='';
+var videosWatched=[false,false,false,false,false];
+var currentVideo=-1;
+var videoTimer=null;
+var videoWatchTime=0;
+var docRead=false;
+var quizAnswers=new Array(QUIZ.length).fill(-1);
+var quizGraded=false;
+
+// ===== NAME =====
+var nameInput=document.getElementById('nameInput');
+var startBtn=document.getElementById('startBtn');
+nameInput.addEventListener('input',function(){
+  startBtn.disabled=nameInput.value.trim().length<3;
+});
+
+function startOnboarding(){
+  userName=nameInput.value.trim();
+  if(!userName)return;
+  document.getElementById('progressArea').style.display='block';
+  showScreen('s-videos');
+  updateStep(2);
+  updateProgress(10);
+}
+
+// ===== NAVIGATION =====
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function updateStep(n){
+  document.querySelectorAll('.step').forEach(function(s){
+    var sn=parseInt(s.dataset.step);
+    if(sn<n)s.className='step done';
+    else if(sn===n)s.className='step active';
+    else s.className='step';
+  });
+}
+
+function updateProgress(pct){
+  document.getElementById('progressFill').style.width=pct+'%';
+}
+
+// ===== VIDEOS =====
+function playVideo(idx){
+  if(!ytReady)return;
+  currentVideo=idx;
+  videoWatchTime=0;
+  document.getElementById('videoOverlay').classList.add('active');
+  document.getElementById('videoList').style.display='none';
+  document.getElementById('videosNextBtn').style.display='none';
+
+  if(player){
+    player.loadVideoById(VIDEOS[idx].id);
+  }else{
+    player=new YT.Player('ytPlayer',{
+      videoId:VIDEOS[idx].id,
+      playerVars:{rel:0,modestbranding:1,playsinline:1},
+      events:{onStateChange:onPlayerState}
+    });
+  }
+  updateVideoTimer();
+}
+
+function onPlayerState(e){
+  if(e.data===YT.PlayerState.PLAYING){
+    if(videoTimer)clearInterval(videoTimer);
+    videoTimer=setInterval(function(){
+      videoWatchTime++;
+      updateVideoTimer();
+      var dur=player.getDuration();
+      // Mark as watched if they've seen 70%+ of the video
+      if(dur>0 && videoWatchTime >= dur*0.7){
+        markVideoWatched(currentVideo);
+      }
+    },1000);
+  }else{
+    if(videoTimer)clearInterval(videoTimer);
+  }
+  // Also mark complete when video ends
+  if(e.data===YT.PlayerState.ENDED){
+    markVideoWatched(currentVideo);
+  }
+}
+
+function markVideoWatched(idx){
+  if(videosWatched[idx])return;
+  videosWatched[idx]=true;
+  var card=document.querySelector('.video-card[data-idx="'+idx+'"]');
+  card.classList.add('watched');
+  card.querySelector('.status').textContent='✅';
+  var count=videosWatched.filter(Boolean).length;
+  document.getElementById('videoCount').textContent=count;
+  if(count===5){
+    document.getElementById('videosNextBtn').disabled=false;
+    updateProgress(40);
+  }else{
+    updateProgress(10+count*6);
+  }
+}
+
+function updateVideoTimer(){
+  var m=Math.floor(videoWatchTime/60);
+  var s=videoWatchTime%60;
+  document.getElementById('videoTimer').textContent='Tiempo visto: '+m+':'+(s<10?'0':'')+s;
+}
+
+function closeVideo(){
+  if(player)player.stopVideo();
+  if(videoTimer)clearInterval(videoTimer);
+  document.getElementById('videoOverlay').classList.remove('active');
+  document.getElementById('videoList').style.display='block';
+  document.getElementById('videosNextBtn').style.display='block';
+  currentVideo=-1;
+}
+
+function goToVideos(){
+  showScreen('s-videos');
+  updateStep(2);
+}
+
+// ===== DOCUMENT =====
+function goToDoc(){
+  showScreen('s-doc');
+  updateStep(3);
+  updateProgress(50);
+  // Track scroll to bottom
+  var docEl=document.getElementById('docContent');
+  docEl.addEventListener('scroll',function(){
+    if(docEl.scrollTop+docEl.clientHeight >= docEl.scrollHeight-30){
+      docRead=true;
+      document.getElementById('docNextBtn').disabled=false;
+      document.getElementById('scrollHint').style.display='none';
+      updateProgress(65);
+    }
+  });
+}
+
+// ===== QUIZ =====
+function goToQuiz(){
+  showScreen('s-quiz');
+  updateStep(4);
+  updateProgress(70);
+  renderQuiz();
+}
+
+function renderQuiz(){
+  var html='';
+  QUIZ.forEach(function(q,i){
+    html+='<div class="quiz-q" id="qq'+i+'">';
+    html+='<div class="q-num">Pregunta '+(i+1)+' de '+QUIZ.length+'</div>';
+    html+='<div class="q-text">'+q.q+'</div>';
+    q.o.forEach(function(opt,j){
+      html+='<div class="option" data-q="'+i+'" data-o="'+j+'" onclick="selectOption('+i+','+j+')">'+opt+'</div>';
+    });
+    html+='</div>';
+  });
+  document.getElementById('quizQuestions').innerHTML=html;
+}
+
+function selectOption(qi,oi){
+  if(quizGraded)return;
+  quizAnswers[qi]=oi;
+  document.querySelectorAll('.option[data-q="'+qi+'"]').forEach(function(el){
+    el.classList.remove('selected');
+    if(parseInt(el.dataset.o)===oi)el.classList.add('selected');
+  });
+  // Enable submit if all answered
+  var all=quizAnswers.every(function(a){return a>=0});
+  document.getElementById('submitQuiz').disabled=!all;
+  var answered=quizAnswers.filter(function(a){return a>=0}).length;
+  updateProgress(70+answered*2);
+}
+
+function gradeQuiz(){
+  quizGraded=true;
+  var correct=0;
+  QUIZ.forEach(function(q,i){
+    var opts=document.querySelectorAll('.option[data-q="'+i+'"]');
+    opts.forEach(function(el){
+      var oi=parseInt(el.dataset.o);
+      if(oi===q.a)el.classList.add('correct');
+      else if(oi===quizAnswers[i] && oi!==q.a)el.classList.add('wrong');
+      el.style.cursor='default';
+    });
+    if(quizAnswers[i]===q.a)correct++;
+  });
+
+  var pct=Math.round(correct/QUIZ.length*100);
+  var passed=pct>=80;
+
+  setTimeout(function(){
+    showResults(correct,pct,passed);
+  },1500);
+}
+
+function showResults(correct,pct,passed){
+  updateProgress(100);
+  showScreen('s-result');
+
+  var html='<div class="result-card card">';
+  html+='<div class="result-icon">'+(passed?'🎉':'😔')+'</div>';
+  html+='<div class="result-score">'+correct+'/'+QUIZ.length+'</div>';
+  html+='<div class="result-msg">'+(passed?'¡Felicitaciones, '+userName+'! Aprobaste el onboarding.':'No alcanzaste el 80% necesario. Puedes volver a intentarlo.')+'</div>';
+
+  if(passed){
+    html+='<div class="cert-box">';
+    html+='<div class="cert-title">🍗 CERTIFICADO DE ONBOARDING</div>';
+    html+='<div class="cert-name">'+userName+'</div>';
+    html+='<div class="cert-date">Completado el '+new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})+'</div>';
+    html+='<div style="margin-top:12px;color:var(--muted);font-size:0.85rem">Puntaje: '+pct+'% | Videos: 5/5 | Documento: Leído</div>';
+    html+='</div>';
+    html+='<div id="sendStatus" style="margin-top:16px;color:var(--muted)"><span class="spinner"></span> Registrando en el sistema...</div>';
+    html+='</div>';
+
+    document.getElementById('resultContent').innerHTML=html;
+    sendToNotion(userName,pct,true);
+  }else{
+    html+='<button class="btn btn-gold" onclick="retryQuiz()" style="margin-top:16px">Volver a Intentar Quiz</button>';
+    html+='</div>';
+    document.getElementById('resultContent').innerHTML=html;
+    sendToNotion(userName,pct,false);
+  }
+}
+
+function retryQuiz(){
+  quizGraded=false;
+  quizAnswers=new Array(QUIZ.length).fill(-1);
+  document.getElementById('submitQuiz').disabled=true;
+  goToQuiz();
+}
+
+// ===== NOTION =====
+function sendToNotion(name,score,passed){
+  var data={
+    nombre:name,
+    puntaje:score,
+    videosVistos:videosWatched.filter(Boolean).length,
+    documentoLeido:docRead,
+    estado:passed?'Completado':'Reprobado'
+  };
+  fetch('/api/complete',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  }).then(function(r){return r.json()}).then(function(d){
+    var el=document.getElementById('sendStatus');
+    if(el){
+      if(d.ok) el.innerHTML='✅ Registrado exitosamente';
+      else el.innerHTML='⚠️ No se pudo registrar automáticamente. Avisa a tu supervisor.';
+    }
+  }).catch(function(){
+    var el=document.getElementById('sendStatus');
+    if(el) el.innerHTML='⚠️ No se pudo registrar automáticamente. Avisa a tu supervisor.';
+  });
+}
+</script>
+</body>
+</html>
