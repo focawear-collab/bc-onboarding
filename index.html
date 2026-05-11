@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlackChicken — Onboarding Garzones</title>
+<title>BlackChicken — Onboarding</title>
 <style>
 :root{--bg:#0a0a0a;--card:#141414;--card-hover:#1a1a1a;--gold:#d4a843;--gold-light:#f5e6b8;--green:#2ecc71;--red:#e74c3c;--text:#e0e0e0;--muted:#888;--border:#2a2a2a}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -103,6 +103,17 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 /* Loading */
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--muted);border-top-color:var(--gold);border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:middle;margin-right:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* Role selector */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.role-card{background:#1a1a1a;border:2px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s}
+.role-card:hover{border-color:var(--gold);background:#1f1a0f}
+.role-card.selected{border-color:var(--gold);background:#1f1a0f}
+.role-card.selected .role-title{color:var(--gold)}
+.role-icon{font-size:1.8rem;margin-bottom:6px}
+.role-title{font-weight:600;color:var(--text);font-size:0.95rem;margin-bottom:2px}
+.role-desc{color:var(--muted);font-size:0.75rem;line-height:1.3}
+.role-badge{display:inline-block;padding:4px 12px;background:#1f1a0f;border:1px solid var(--gold);color:var(--gold);border-radius:20px;font-size:0.8rem;margin-left:8px}
 </style>
 </head>
 <body>
@@ -111,7 +122,7 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 <!-- PROGRESS -->
 <div id="progressArea" style="display:none">
 <div class="steps">
-  <div class="step" data-step="1">Nombre</div>
+  <div class="step" data-step="1">Inicio</div>
   <div class="step" data-step="2">Videos</div>
   <div class="step" data-step="3">Carta</div>
   <div class="step" data-step="4">Quiz</div>
@@ -123,12 +134,35 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 <div class="screen active" id="s-welcome">
 <div class="logo"><img src="data:image/webp;base64,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" alt="BlackChicken Logo" style="width:120px;height:120px;border-radius:50%"></div>
 <h1>BlackChicken</h1>
-<p class="subtitle">Onboarding Garzones</p>
+<p class="subtitle">Onboarding</p>
 <div class="card" style="text-align:center">
   <p style="margin-bottom:20px">Bienvenido al equipo BlackChicken. Antes de tu primer día necesitamos que completes este proceso de capacitación.</p>
   <p style="color:var(--muted);font-size:0.85rem;margin-bottom:24px">Verás 5 videos, leerás nuestra carta, y responderás un quiz corto. Toma aproximadamente 30-40 minutos.</p>
-  <label for="nameInput">Tu nombre completo</label>
+  <label for="nameInput" style="text-align:left">Tu nombre completo</label>
   <input type="text" id="nameInput" placeholder="Ej: Juan Pérez" autocomplete="name">
+  <label style="margin-top:18px;text-align:left">Tu cargo en BlackChicken</label>
+  <div class="role-grid" id="roleGrid">
+    <div class="role-card" data-role="Garzón" onclick="selectRole(this)">
+      <div class="role-icon">🤵</div>
+      <div class="role-title">Garzón</div>
+      <div class="role-desc">Atención de salón y servicio</div>
+    </div>
+    <div class="role-card" data-role="Cocina" onclick="selectRole(this)">
+      <div class="role-icon">👨‍🍳</div>
+      <div class="role-title">Cocina</div>
+      <div class="role-desc">Preparación y línea</div>
+    </div>
+    <div class="role-card" data-role="Jefe de Local" onclick="selectRole(this)">
+      <div class="role-icon">📋</div>
+      <div class="role-title">Jefe de Local</div>
+      <div class="role-desc">Liderazgo operacional</div>
+    </div>
+    <div class="role-card" data-role="Administrativo" onclick="selectRole(this)">
+      <div class="role-icon">💼</div>
+      <div class="role-title">Administrativo</div>
+      <div class="role-desc">Backoffice y soporte</div>
+    </div>
+  </div>
   <div style="margin-top:20px">
     <button class="btn btn-gold" id="startBtn" disabled onclick="startOnboarding()">Comenzar</button>
   </div>
@@ -271,7 +305,7 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 <!-- SCREEN 3: Quiz -->
 <div class="screen" id="s-quiz">
 <h2>📝 Quiz de Evaluación</h2>
-<p style="color:var(--muted);margin-bottom:8px;font-size:0.9rem">Responde las siguientes preguntas. Necesitas <strong style="color:var(--gold)">80% (10/12)</strong> para aprobar.</p>
+<p style="color:var(--muted);margin-bottom:8px;font-size:0.9rem">Responde las siguientes preguntas. Necesitas <strong style="color:var(--gold)" id="quizPassText">80%</strong> para aprobar.</p>
 <div id="quizQuestions"></div>
 <div style="margin-top:20px">
   <button class="btn btn-gold" id="submitQuiz" disabled onclick="gradeQuiz()">Enviar Respuestas</button>
@@ -303,7 +337,8 @@ var VIDEOS = [
   {id:'uZjB7u3vGdg', title:'Rapidez + Rotación'}
 ];
 
-var QUIZ = [
+// Quiz base — universal para todos los roles (8 preguntas sobre carta/producto)
+var QUIZ_BASE = [
   {q:'¿Cuántas horas toma el proceso completo del Pollo Rostizado (marinado + cocción)?',
    o:['12 horas','24 horas','48 horas','6 horas'], a:1},
   {q:'¿Qué técnica se usa para la Pechuga Grillé?',
@@ -312,14 +347,18 @@ var QUIZ = [
    o:['Coreana','Tso','Crispy','Búfalo'], a:3},
   {q:'¿Qué opción vegetariana existe para las Burgers y el Pollo Coreano?',
    o:['Tofu','Falafel','Seitán','Champiñones'], a:1},
-  {q:'¿Con qué se endulzan las bebidas de la casa (Ice Tea y Limonada)?',
-   o:['Azúcar','Miel','Stevia','Sin endulzante'], a:2},
+  {q:'¿Cómo se llama el postre de la casa de BlackChicken?',
+   o:['Tres leches','Cheesecake Vasco','Budín de la Toti','Mousse de chocolate'], a:2},
   {q:'¿Qué técnica se usa para las Papas Fritas estilo Belga?',
    o:['Se fríen una vez a alta temperatura','Se hornean','Se fríen dos veces','Se hacen al airfryer'], a:2},
   {q:'¿Qué ingredientes tiene la salsa Mielken?',
    o:['Miel y mostaza','Miel y merkén','Miel y limón','Merkén y ají'], a:1},
   {q:'¿Cuál de estas ensaladas lleva maní japonés?',
-   o:['Black Salad','César Salad','Ensalada Camarón','Asian Salad'], a:3},
+   o:['Black Salad','César Salad','Ensalada Camarón','Asian Salad'], a:3}
+];
+
+// Preguntas adicionales solo para Garzón (servicio al cliente)
+var QUIZ_GARZON_EXTRA = [
   {q:'¿Qué es lo PRIMERO que debe hacer un garzón cuando llega un cliente al local?',
    o:['Pasarle la carta','Saludarlo con contacto visual y una sonrisa','Preguntarle cuántas personas son','Indicarle que se siente donde quiera'], a:1},
   {q:'¿Por qué es importante la rotación rápida de mesas en BlackChicken?',
@@ -330,26 +369,45 @@ var QUIZ = [
    o:['Ignorarlo y seguir trabajando','Discutir con el cliente para defender al restaurante','Escuchar con empatía, disculparse y buscar una solución rápida','Decirle que hable con el dueño'], a:2}
 ];
 
+// QUIZ se arma según el rol en startOnboarding()
+var QUIZ = QUIZ_BASE.slice();
+
 // ===== STATE =====
 var userName='';
+var userRole='';
 var videosWatched=[false,false,false,false,false];
 var currentVideo=-1;
 var videoTimer=null;
 var videoWatchTime=0;
 var docRead=false;
-var quizAnswers=new Array(QUIZ.length).fill(-1);
+var quizAnswers=[];
 var quizGraded=false;
 
-// ===== NAME =====
+// ===== NAME + ROLE =====
 var nameInput=document.getElementById('nameInput');
 var startBtn=document.getElementById('startBtn');
-nameInput.addEventListener('input',function(){
-  startBtn.disabled=nameInput.value.trim().length<3;
-});
+function updateStartButtonState(){
+  startBtn.disabled = !(nameInput.value.trim().length>=3 && userRole);
+}
+nameInput.addEventListener('input',updateStartButtonState);
+
+function selectRole(el){
+  document.querySelectorAll('.role-card').forEach(function(c){c.classList.remove('selected')});
+  el.classList.add('selected');
+  userRole = el.dataset.role;
+  updateStartButtonState();
+}
 
 function startOnboarding(){
   userName=nameInput.value.trim();
-  if(!userName)return;
+  if(!userName || !userRole)return;
+  // Build quiz according to role
+  if(userRole==='Garzón'){
+    QUIZ = QUIZ_BASE.concat(QUIZ_GARZON_EXTRA);
+  }else{
+    QUIZ = QUIZ_BASE.slice();
+  }
+  quizAnswers = new Array(QUIZ.length).fill(-1);
   document.getElementById('progressArea').style.display='block';
   showScreen('s-videos');
   updateStep(2);
@@ -472,10 +530,16 @@ function goToDoc(){
 }
 
 // ===== QUIZ =====
+// Aprobación: Garzón = 10/12 (83%), otros = 7/8 (87%)
+function passingScore(){
+  return userRole==='Garzón' ? 10 : 7;
+}
+
 function goToQuiz(){
   showScreen('s-quiz');
   updateStep(4);
   updateProgress(70);
+  document.getElementById('quizPassText').textContent = passingScore()+'/'+QUIZ.length;
   renderQuiz();
 }
 
@@ -504,7 +568,8 @@ function selectOption(qi,oi){
   var all=quizAnswers.every(function(a){return a>=0});
   document.getElementById('submitQuiz').disabled=!all;
   var answered=quizAnswers.filter(function(a){return a>=0}).length;
-  updateProgress(70+answered*2);
+  // 70%..98% repartido entre las preguntas (independiente del total)
+  updateProgress(70 + Math.round(answered/QUIZ.length*28));
 }
 
 function gradeQuiz(){
@@ -522,7 +587,7 @@ function gradeQuiz(){
   });
 
   var pct=Math.round(correct/QUIZ.length*100);
-  var passed=pct>=80;
+  var passed=correct >= passingScore();
 
   setTimeout(function(){
     showResults(correct,pct,passed);
@@ -542,8 +607,9 @@ function showResults(correct,pct,passed){
     html+='<div class="cert-box">';
     html+='<div class="cert-title">🍗 CERTIFICADO DE ONBOARDING</div>';
     html+='<div class="cert-name">'+userName+'</div>';
+    html+='<div style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">'+userRole+'</div>';
     html+='<div class="cert-date">Completado el '+new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})+'</div>';
-    html+='<div style="margin-top:12px;color:var(--muted);font-size:0.85rem">Puntaje: '+pct+'% | Videos: 5/5 | Documento: Leído</div>';
+    html+='<div style="margin-top:12px;color:var(--muted);font-size:0.85rem">Puntaje: '+correct+'/'+QUIZ.length+' ('+pct+'%) | Videos: 5/5 | Documento: Leído</div>';
     html+='</div>';
     html+='<div id="sendStatus" style="margin-top:16px;color:var(--muted)"><span class="spinner"></span> Registrando en el sistema...</div>';
     html+='</div>';
@@ -580,6 +646,7 @@ function reviewContent(){
 function sendToNotion(name,score,passed){
   var data={
     nombre:name,
+    cargo:userRole,
     puntaje:score,
     videosVistos:videosWatched.filter(Boolean).length,
     documentoLeido:docRead,
