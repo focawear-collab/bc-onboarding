@@ -173,7 +173,7 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 <div class="screen" id="s-videos">
 <h2>📹 Videos de Capacitación</h2>
 <p style="color:var(--muted);margin-bottom:16px;font-size:0.9rem">Mira cada video completo. Se marcará automáticamente cuando lo termines.</p>
-<div class="counter"><span id="videoCount">0</span>/5 videos completados</div>
+<div class="counter"><span id="videoCount">0</span>/<span id="videoTotal">5</span> videos completados</div>
 
 <div id="videoList">
   <div class="video-card card" data-idx="0" onclick="playVideo(0)">
@@ -200,6 +200,11 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
     <span class="status">⏳</span>
     <div class="title">5. Rapidez + Rotación</div>
     <div class="desc">Eficiencia y rotación de mesas</div>
+  </div>
+  <div class="video-card card" data-idx="5" onclick="playVideo(5)" id="videoCardAdmin" style="display:none">
+    <span class="status">⏳</span>
+    <div class="title">6. Gestión y Liderazgo <span class="role-badge">Jefatura</span></div>
+    <div class="desc">Video exclusivo para roles administrativos y jefatura</div>
   </div>
 </div>
 
@@ -478,6 +483,7 @@ var QUIZ = QUIZ_BASE.slice();
 var userName='';
 var userRole='';
 var videosWatched=[false,false,false,false,false];
+var totalVideos=5;
 var currentVideo=-1;
 var videoTimer=null;
 var videoWatchTime=0;
@@ -508,6 +514,14 @@ function startOnboarding(){
     QUIZ = QUIZ_BASE.concat(QUIZ_GARZON_EXTRA);
   }else{
     QUIZ = QUIZ_BASE.slice();
+  }
+  // Add exclusive video for Administrativo / Jefe de Local
+  if(userRole==='Administrativo' || userRole==='Jefe de Local'){
+    VIDEOS.push({id:'h8o_sq6AucU', title:'Gestión y Liderazgo'});
+    videosWatched.push(false);
+    totalVideos=6;
+    document.getElementById('videoCardAdmin').style.display='';
+    document.getElementById('videoTotal').textContent='6';
   }
   quizAnswers = new Array(QUIZ.length).fill(-1);
   document.getElementById('progressArea').style.display='block';
@@ -586,7 +600,7 @@ function markVideoWatched(idx){
   card.querySelector('.status').textContent='✅';
   var count=videosWatched.filter(Boolean).length;
   document.getElementById('videoCount').textContent=count;
-  if(count===5){
+  if(count===totalVideos){
     document.getElementById('videosNextBtn').disabled=false;
     updateProgress(40);
   }else{
