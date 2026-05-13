@@ -225,74 +225,176 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 <p style="color:var(--muted);margin-bottom:16px;font-size:0.9rem">Lee cuidadosamente la descripción de cada plato. Esto te ayudará en el quiz.</p>
 
 <div class="doc-content" id="docContent">
-<h3>🍗 POLLO ROSTIZADO</h3>
-<p>Preparado en un proceso de 24 horas: 21 de marinado y 3 de cocción lenta en nuestra rotisserie. Esto da como resultado una carne tierna, jugosa y dorada.</p>
+<style>
+#docContent .dc-section{margin-bottom:32px}
+#docContent .dc-section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #2a2a2a}
+#docContent .dc-section-icon{width:32px;height:32px;background:linear-gradient(135deg,#d4af37,#f0c940);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+#docContent .dc-section-title{font-size:16px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px}
+#docContent .dc-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:20px;margin-bottom:12px;transition:border-color 0.2s}
+#docContent .dc-card:hover{border-color:#d4af37}
+#docContent .dc-card.dc-featured{border-color:#d4af37;background:linear-gradient(135deg,#1a1505,#1a1a1a)}
+#docContent .dc-dish-name{font-size:16px;font-weight:800;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+#docContent .dc-dish-name .dc-emoji{font-size:20px}
+#docContent .dc-dish-desc{font-size:13px;color:#999;line-height:1.6}
+#docContent .dc-dish-desc strong{color:#e0e0e0}
+#docContent .dc-sub-items{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+#docContent .dc-sub-item{display:flex;align-items:flex-start;gap:8px;background:#141414;border:1px solid #222;border-radius:7px;padding:10px 12px}
+#docContent .dc-sub-dot{width:6px;height:6px;background:#d4af37;border-radius:50%;margin-top:6px;flex-shrink:0}
+#docContent .dc-sub-text{font-size:13px;color:#bbb;line-height:1.5}
+#docContent .dc-sub-text strong{color:#fff}
+#docContent .dc-sub-text em{color:#d4af37;font-style:normal;font-weight:600}
+#docContent .dc-tip-box{background:linear-gradient(135deg,#1a1a0a,#1a1a1a);border:1px dashed #d4af37;border-radius:8px;padding:12px 14px;margin-top:10px;display:flex;align-items:center;gap:8px}
+#docContent .dc-tip-icon{font-size:16px;flex-shrink:0}
+#docContent .dc-tip-text{font-size:12px;color:#d4af37;font-weight:600}
+#docContent .dc-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+#docContent .dc-info-card{background:#141414;border:1px solid #222;border-radius:8px;padding:12px;text-align:center}
+#docContent .dc-info-card .dc-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px}
+#docContent .dc-info-card .dc-desc{font-size:11px;color:#777;line-height:1.4}
+@media(max-width:600px){#docContent .dc-info-grid{grid-template-columns:1fr 1fr}}
+</style>
 
-<h3>🍽️ PECHUGA GRILLÉ</h3>
-<p>Pechuga de pollo grillada con técnica <em>Slow Cook</em>, lo que la hace increíblemente suave, jugosa y con un delicioso sabor a parrilla.</p>
+<!-- INTRO -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">👋</div><h3 class="dc-section-title">Bienvenida</h3></div>
+  <div class="dc-card dc-featured">
+    <div class="dc-dish-desc" style="font-size:14px;color:#ccc;">
+      <strong style="color:#d4af37;">¡Hola, bienvenidos! Somos una Rotisserie.</strong><br><br>
+      A continuación encontrarás la descripción de cada plato y bebida del menú para que puedas explicarle a los clientes con confianza qué ofrecemos y cómo se prepara cada uno.
+    </div>
+  </div>
+</div>
 
-<h3>🔥 POLLO COREANO (en 4 salsas distintas)</h3>
-<p>Cubos de pechuga de pollo marinados y bañados en diferentes salsas:</p>
-<ul>
-<li><strong>Coreana:</strong> agridulce, semi picante. Base de salsa <em>Gochujang</em> coreana.</li>
-<li><strong>Tso:</strong> agridulce, no picante. Similar a la teriyaki.</li>
-<li><strong>Crispy:</strong> tradicional.</li>
-<li><strong>Búfalo:</strong> más picante y con un toque agrio. Nuestra opción más intensa.</li>
-</ul>
-<p>También disponible en versión <em>falafel</em> para vegetarianos.</p>
+<!-- PLATOS PRINCIPALES -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">🔥</div><h3 class="dc-section-title">Platos Principales</h3></div>
 
-<h3>🍖 COSTILLAS COREANAS BBQ</h3>
-<p>Costillas estilo St. Louis, muy tiernas, adobadas en nuestra salsa BBQ coreana de autor.</p>
+  <div class="dc-card dc-featured">
+    <div class="dc-dish-name"><span class="dc-emoji">🍗</span> Pollo Rostizado</div>
+    <div class="dc-dish-desc">Preparado en un proceso de <strong>24 horas</strong>: 21 de marinado y 3 de cocción lenta en nuestra rotisserie. Esto da como resultado una carne tierna, jugosa y dorada.</div>
+  </div>
 
-<h3>🍟 ACOMPAÑAMIENTOS</h3>
-<ul>
-<li><strong>Arroz Chaufa:</strong> clásico chaufa con base de vegetales y tortilla de huevo.</li>
-<li><strong>Papas Fritas estilo Belga:</strong> crujientes por fuera, suaves por dentro. Se fríen dos veces (técnica belga).</li>
-</ul>
+  <div class="dc-card">
+    <div class="dc-dish-name"><span class="dc-emoji">🥩</span> Pechuga Grillé</div>
+    <div class="dc-dish-desc">Pechuga de pollo grillada con técnica <strong>Slow Cook</strong>, lo que la hace increíblemente suave, jugosa y con un delicioso sabor a parrilla.</div>
+  </div>
 
-<h3>🥗 ENSALADAS</h3>
-<ul>
-<li><strong>Black Salad:</strong> mix de hojas verdes, almendras crujientes, parmesano, alcachofa.</li>
-<li><strong>Ensalada Camarón:</strong> igual que la Black, con agregado de camarón.</li>
-<li><strong>Asian Salad:</strong> mix de hojas, pollo desmenuzado, maní japonés, vinagreta asiática.</li>
-<li><strong>César Salad:</strong> clásica ensalada César con hojas verdes, crutones, pollo, parmesano.</li>
-</ul>
+  <div class="dc-card">
+    <div class="dc-dish-name"><span class="dc-emoji">🔥</span> Pollo Coreano <span style="font-size:12px;color:#d4af37;font-weight:600;">(5 salsas)</span></div>
+    <div class="dc-dish-desc">Cubos de pechuga de pollo marinados y bañados en diferentes salsas. También disponible en versión <strong>falafel</strong> para vegetarianos.</div>
+    <div class="dc-sub-items">
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Coreana</strong> — Agridulce, semi picante. Base de salsa <em>Gochujang</em> coreana con otros ingredientes; versión del chef.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Tso</strong> — Agridulce, NO picante. Salsa asiática similar a la teriyaki.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Crispy</strong> — Tradicional. Pollo crispy clásico sin salsa.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Búfalo</strong> — Más picante y con un toque agrio. Salsa americana tradicional. <em>Nuestra opción más picante.</em></div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Mielkén</strong> — Combinación de miel, merkén y otros ingredientes. Dulce con un leve picor ahumado.</div></div>
+    </div>
+  </div>
 
-<h3>Vinagretas disponibles:</h3>
-<ul>
-<li><strong>De la casa:</strong> emulsión de aceto balsámico y aceite de oliva.</li>
-<li><strong>Asiática:</strong> agridulce, auténtica y muy fresca.</li>
-<li><strong>César:</strong> versión del chef de la clásica.</li>
-</ul>
+  <div class="dc-card">
+    <div class="dc-dish-name"><span class="dc-emoji">🥩</span> Costillas Coreanas BBQ</div>
+    <div class="dc-dish-desc">Costillas estilo <strong>St. Louis</strong>, muy tiernas, adobadas en nuestra salsa BBQ coreana de autor.</div>
+  </div>
 
-<h3>🍔 BURGERS DE POLLO FRITO</h3>
-<p>También disponibles en versión <em>falafel</em>.</p>
-<ul>
-<li><strong>Korean Burger:</strong> pollo coreano, coleslaw, pepinillo, alioli, pan de papa.</li>
-<li><strong>TSO Burger:</strong> pollo en salsa Tso, coleslaw, pepinillo, alioli, pan de papa.</li>
-<li><strong>Crispy Burger:</strong> pollo crispy, coleslaw, pepinillo, alioli, pan de papa.</li>
-<li><strong>Buffalo Burger:</strong> pollo en salsa búfalo, coleslaw, pepinillo, alioli, pan de papa.</li>
-<li><strong>Classic Burger:</strong> pollo crispy, lechuga, tomate, alioli, pepinillo.</li>
-</ul>
+  <div class="dc-card">
+    <div class="dc-dish-name"><span class="dc-emoji">🥓</span> Lomo Liso</div>
+    <div class="dc-dish-desc">Lomo liso hecho con técnica <strong>Slow Cook</strong>, temperatura baja, terminado en la parrilla.</div>
+  </div>
+</div>
 
-<h3>🥤 BEBIDAS DE LA CASA</h3>
-<ul>
-<li><strong>Ice Tea:</strong> té negro con un toque de limón sutil.</li>
-<li><strong>Limonada:</strong> limón sutil y un ligero sabor a jengibre.</li>
-</ul>
-<p>Ambas endulzadas con <strong>Stevia</strong>.</p>
+<!-- BURGERS -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">🍔</div><h3 class="dc-section-title">Burgers de Pollo Frito</h3></div>
+  <div class="dc-card">
+    <div class="dc-dish-desc" style="margin-bottom:12px;">También disponibles en versión <strong>falafel</strong>. Todas en pan de papa con coleslaw, pepinillo y alioli (excepto Classic).</div>
+    <div class="dc-sub-items">
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Korean Burger</strong> — Pollo coreano en salsa agridulce semi picante, coleslaw, pepinillo, alioli, pan de papa.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>TSO Burger</strong> — Pollo en salsa Tso, agridulce NO picante, coleslaw, pepinillo, alioli, pan de papa.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Crispy Burger</strong> — Pollo crispy, coleslaw, pepinillo, alioli, pan de papa.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Buffalo Burger</strong> — Pollo en salsa búfalo, <em>nuestra opción más picante</em>, coleslaw, pepinillo, alioli, pan de papa.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Mielkén Burger</strong> — Pollo en salsa mielkén, dulce levemente picante con toque ahumado, coleslaw, pepinillo, alioli, pan de papa.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Classic Burger</strong> — Pollo crispy tradicional, lechuga, tomate, alioli, pepinillo.</div></div>
+    </div>
+  </div>
+</div>
 
-<h3>🍮 POSTRE</h3>
-<p><strong>Budín de la Toti:</strong> budín de pan súper suave.</p>
+<!-- ACOMPAÑAMIENTOS -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">🍟</div><h3 class="dc-section-title">Acompañamientos</h3></div>
+  <div class="dc-card">
+    <div class="dc-sub-items">
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Arroz Chaufa</strong> — Clásico chaufa con base de vegetales y tortilla de huevo.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Papas Fritas estilo Belga</strong> — Crujientes por fuera, suaves por dentro. Se fríen dos veces (técnica belga).</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Papas a las Finas Hierbas</strong> — Papas tiernas seleccionadas del sur de Chile, cocinadas lentamente con técnica Slow Cook a temperatura baja. Con mantequilla infusionada con finas hierbas.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Black Salad</strong> — Mix de hojas verdes, almendras crujientes, parmesano, alcachofa. Puedes elegir la vinagreta.</div></div>
+    </div>
+  </div>
+</div>
 
-<h3>Salsas del Chef</h3>
-<ul>
-<li><strong>Mielken:</strong> combinación de miel, merkén y otros ingredientes. Dulce con un leve picor ahumado.</li>
-<li><strong>Alioli Japonesa:</strong> fusión entre el alioli español y la mayonesa japonesa. Cremosa, suave, toque umami.</li>
-<li><strong>Coreana:</strong> base de <em>Gochujang</em>. Picor suave y sabor agridulce.</li>
-<li><strong>Tso:</strong> asiática agridulce, no picante. Similar a la teriyaki.</li>
-<li><strong>Búfalo:</strong> americana tradicional, picante y ácida. La más intensa.</li>
-</ul>
+<!-- ENSALADAS -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">🥗</div><h3 class="dc-section-title">Ensaladas</h3></div>
+  <div class="dc-tip-box" style="margin-bottom:12px;">
+    <span class="dc-tip-icon">💡</span>
+    <span class="dc-tip-text">Siempre sugerir agregar camarones para elevar la experiencia.</span>
+  </div>
+  <div class="dc-card">
+    <div class="dc-sub-items">
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Black Salad</strong> — Mix de hojas verdes, almendras crujientes, parmesano, alcachofa. Puedes elegir la vinagreta.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Ensalada Camarón</strong> — Igual que la Black, con agregado de camarón.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Asian Salad</strong> — Mix de hojas, pollo desmenuzado, maní japonés, vinagreta asiática.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>César Salad</strong> — Clásica ensalada César con hojas verdes, crutones, pollo, parmesano y vinagreta césar.</div></div>
+    </div>
+  </div>
+  <div class="dc-card" style="margin-top:12px;">
+    <div class="dc-dish-name" style="font-size:14px;">🫒 Vinagretas disponibles</div>
+    <div class="dc-info-grid">
+      <div class="dc-info-card"><div class="dc-name">De la Casa</div><div class="dc-desc">Emulsión a base de aceto balsámico, aceite de oliva y otros ingredientes.</div></div>
+      <div class="dc-info-card"><div class="dc-name">Asiática</div><div class="dc-desc">Agridulce, auténtica y muy fresca.</div></div>
+      <div class="dc-info-card"><div class="dc-name">César</div><div class="dc-desc">Versión del chef de la clásica vinagreta César.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BEBIDAS -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">🥤</div><h3 class="dc-section-title">Bebidas de la Casa</h3></div>
+  <div class="dc-card">
+    <div class="dc-sub-items">
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Ice Tea</strong> — Té negro con un toque de limón sutil.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Limonada</strong> — Limón sutil y un ligero sabor a jengibre.</div></div>
+    </div>
+    <div class="dc-tip-box">
+      <span class="dc-tip-icon">🍃</span>
+      <span class="dc-tip-text">Las dos disponibles en opción endulzadas con Stevia.</span>
+    </div>
+  </div>
+</div>
+
+<!-- POSTRES -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">🍮</div><h3 class="dc-section-title">Postres</h3></div>
+  <div class="dc-card">
+    <div class="dc-sub-items">
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Budín de la Toti</strong> — Una mezcla suave de soufflé y flan de vainilla.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Cheesecake Vasco</strong> — Versión moderna del clásico postre del País Vasco. Textura cremosa con un sabor intenso.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SALSAS DEL CHEF -->
+<div class="dc-section">
+  <div class="dc-section-header"><div class="dc-section-icon">🧑‍🍳</div><h3 class="dc-section-title">Salsas del Chef</h3></div>
+  <div class="dc-card">
+    <div class="dc-sub-items">
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Mielkén</strong> — Combinación de miel, merkén y otros ingredientes seleccionados. Dulce con un leve picor ahumado.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Alioli Japonesa</strong> — Fusión entre el alioli tradicional español y la mayonesa japonesa. Cremosa, suave y con un toque umami.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Coreana</strong> — A base de salsa <em>Gochujang</em> coreana y otros ingredientes. Versión del chef con picor suave y sabor agridulce.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Tso</strong> — Salsa asiática agridulce, no picante. Similar a la teriyaki, pero con un toque más fresco.</div></div>
+      <div class="dc-sub-item"><div class="dc-sub-dot"></div><div class="dc-sub-text"><strong>Búfalo</strong> — Salsa americana tradicional, picante y con sabor más ácido. <em>Nuestra opción más intensa.</em></div></div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <div class="scroll-hint" id="scrollHint">↓ Baja para leer todo el documento ↓</div>
@@ -347,8 +449,8 @@ var QUIZ_BASE = [
    o:['Coreana','Tso','Crispy','Búfalo'], a:3},
   {q:'¿Qué opción vegetariana existe para las Burgers y el Pollo Coreano?',
    o:['Tofu','Falafel','Seitán','Champiñones'], a:1},
-  {q:'¿Cómo se llama el postre de la casa de BlackChicken?',
-   o:['Tres leches','Cheesecake Vasco','Budín de la Toti','Mousse de chocolate'], a:2},
+  {q:'¿Cuáles son los dos postres de BlackChicken?',
+   o:['Tres leches y Mousse','Budín de la Toti y Cheesecake Vasco','Flan y Tiramisú','Brownie y Helado'], a:1},
   {q:'¿Qué técnica se usa para las Papas Fritas estilo Belga?',
    o:['Se fríen una vez a alta temperatura','Se hornean','Se fríen dos veces','Se hacen al airfryer'], a:2},
   {q:'¿Qué ingredientes tiene la salsa Mielken?',
