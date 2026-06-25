@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlackChicken — Onboarding</title>
+<title>Onboarding BlackChicken</title>
 <style>
 :root{--bg:#0a0a0a;--card:#141414;--card-hover:#1a1a1a;--gold:#d4a843;--gold-light:#f5e6b8;--green:#2ecc71;--red:#e74c3c;--text:#e0e0e0;--muted:#888;--border:#2a2a2a}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -165,7 +165,26 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
   </div>
   <div style="margin-top:20px">
     <button class="btn btn-gold" id="startBtn" disabled onclick="startOnboarding()">Comenzar</button>
+    <button class="btn btn-back" onclick="abrirRepaso()" style="margin-top:10px">📚 Repaso de materia</button>
+    <p style="color:var(--muted);font-size:0.78rem;margin-top:8px">¿Ya hiciste el onboarding? Repasa videos y carta sin quiz.</p>
   </div>
+</div>
+</div>
+
+<!-- SCREEN: Repaso de materia (acceso libre) -->
+<div class="screen" id="s-repaso">
+<h2>📚 Repaso de materia</h2>
+<p style="color:var(--muted);margin-bottom:20px;font-size:0.9rem">Vuelve a estudiar el contenido cuando quieras. Acceso libre, sin quiz ni certificado.</p>
+<div class="card video-card" onclick="verRepasoVideos()" style="margin-bottom:12px">
+  <div class="title">📹 Videos de capacitación</div>
+  <div class="desc">Bienvenida, recepción de clientes, carta express y rotación — míralos las veces que necesites.</div>
+</div>
+<div class="card video-card" onclick="verRepasoCarta()">
+  <div class="title">📖 Carta / Menú</div>
+  <div class="desc">Descripción de todos los platos y bebidas para repasar productos.</div>
+</div>
+<div style="margin-top:20px">
+  <button class="btn btn-back" onclick="volverInicio()">← Volver al inicio</button>
 </div>
 </div>
 
@@ -220,7 +239,8 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 </div>
 
 <div style="margin-top:16px">
-  <button class="btn btn-gold" id="videosNextBtn" disabled onclick="goToDoc()">Continuar a la Carta →</button>
+  <button class="btn btn-gold flow-only" id="videosNextBtn" disabled onclick="goToDoc()">Continuar a la Carta →</button>
+  <button class="btn btn-back repaso-only" style="display:none" onclick="abrirRepaso()">← Volver al repaso</button>
 </div>
 </div>
 
@@ -405,8 +425,9 @@ label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.9rem}
 
 <div class="scroll-hint" id="scrollHint">↓ Baja para leer todo el documento ↓</div>
 <div style="margin-top:16px">
-  <button class="btn btn-gold" id="docNextBtn" disabled onclick="goToQuiz()">Continuar al Quiz →</button>
-  <button class="btn btn-back" onclick="goToVideos()">← Volver a Videos</button>
+  <button class="btn btn-gold flow-only" id="docNextBtn" disabled onclick="goToQuiz()">Continuar al Quiz →</button>
+  <button class="btn btn-back flow-only" onclick="goToVideos()">← Volver a Videos</button>
+  <button class="btn btn-back repaso-only" style="display:none" onclick="abrirRepaso()">← Volver al repaso</button>
 </div>
 </div>
 
@@ -510,6 +531,7 @@ function selectRole(el){
 function startOnboarding(){
   userName=nameInput.value.trim();
   if(!userName || !userRole)return;
+  setRepasoUI(false);
   // Build quiz according to role
   if(userRole==='Garzón'){
     QUIZ = QUIZ_BASE.concat(QUIZ_GARZON_EXTRA);
@@ -537,6 +559,19 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
+
+// ===== REPASO (acceso libre, sin quiz) =====
+var repasoMode=false;
+function setRepasoUI(on){
+  repasoMode=on;
+  document.querySelectorAll('.flow-only').forEach(function(e){ e.style.display = on?'none':''; });
+  document.querySelectorAll('.repaso-only').forEach(function(e){ e.style.display = on?'':'none'; });
+  if(on){ var pa=document.getElementById('progressArea'); if(pa) pa.style.display='none'; }
+}
+function abrirRepaso(){ setRepasoUI(true); showScreen('s-repaso'); }
+function verRepasoVideos(){ setRepasoUI(true); showScreen('s-videos'); }
+function verRepasoCarta(){ setRepasoUI(true); showScreen('s-doc'); }
+function volverInicio(){ setRepasoUI(false); showScreen('s-welcome'); }
 
 function updateStep(n){
   document.querySelectorAll('.step').forEach(function(s){
@@ -620,7 +655,7 @@ function closeVideo(){
   if(videoTimer)clearInterval(videoTimer);
   document.getElementById('videoOverlay').classList.remove('active');
   document.getElementById('videoList').style.display='block';
-  document.getElementById('videosNextBtn').style.display='block';
+  if(!repasoMode){ document.getElementById('videosNextBtn').style.display='block'; }
   currentVideo=-1;
 }
 
